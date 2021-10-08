@@ -1,5 +1,7 @@
 package com.testingappforlampalampa.view.adapter;
 
+import static com.testingappforlampalampa.Constants.*;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -27,7 +30,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return VideoFragment.newInstance();
             default:
-                return null;
+                return getItem(position);
         }
     }
 
@@ -36,13 +39,13 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "FAVORITE";
+                return FAVORITE;
             case 1:
-                return "STORY";
+                return STORY;
             case 2:
-                return "VIDEO";
+                return VIDEO;
             default:
-                return null;
+                return getPageTitle(position);
 
         }
     }

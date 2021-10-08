@@ -1,6 +1,5 @@
 package com.testingappforlampalampa.view.fragment;
 
-import static com.testingappforlampalampa.Constants.*;
 
 import android.os.Bundle;
 import android.view.*;
@@ -13,17 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.testingappforlampalampa.R;
 import com.testingappforlampalampa.model.IGetterJSON;
 import com.testingappforlampalampa.model.Model;
+import com.testingappforlampalampa.model.RetrofitClient;
 import com.testingappforlampalampa.view.adapter.RVAdapter;
 
 import java.util.*;
 
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StoryFragment extends Fragment {
 
-    private List<Model> story;
     private RecyclerView rv;
+    private final CompositeDisposable disposable = new CompositeDisposable();
+    private Maybe<List<Model>> maybe;
+    private IGetterJSON iGetterJSON;
 
     public static StoryFragment newInstance() {
         return new StoryFragment();
@@ -36,52 +42,20 @@ public class StoryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment, container, false);
         rv = view.findViewById(R.id.rv);
-        story = new ArrayList<>();
-        getRetrofit();
+        Retrofit retrofit = RetrofitClient.getInstance();
+        iGetterJSON = retrofit.create(IGetterJSON.class);
+        fetchData();
         return view;
-
     }
 
-    public void getRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        IGetterJSON iGetterJSON = retrofit.create(IGetterJSON.class);
-        Call<List<Model>> call = iGetterJSON.getList();
-        call.enqueue(new Callback<List<Model>>() {
-            @Override
-            public void onResponse(Call<List<Model>> call,
-                                   Response<List<Model>> response) {
-                if (!response.isSuccessful()) {
-                    return;
-                }
-                String title, img, click_url, time, type;
-                List<Model> posts = response.body();
-                for (Model model : posts) {
-
-                    title = model.getTitle();
-                    time = model.getTime();
-                    img = model.getImg();
-                    click_url = model.getClick_url();
-                    type = model.getType();
-                    if (model.getType().equals(TYPE_STORIES)) {
-                        model = new Model(title, img, click_url, time, type);
-                        story.add(model);
-                    }
-                }
-                initRecyclerView(story);
-            }
-
-            @Override
-            public void onFailure(Call<List<Model>> call,
-                                  Throwable t) {
-            }
-        });
+    private void fetchData() {
+        disposable.add(iGetterJSON.getList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::initRecyclerView));
     }
 
-    private void initRecyclerView(List<Model> list) {
+    public void initRecyclerView(List<Model> list) {
         RVAdapter adapter = new RVAdapter(list);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
