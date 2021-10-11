@@ -6,6 +6,6 @@ public class Constants {
     public static String TYPE_STORIES = "strories";
     public static String TYPE_VIDEO = "video";
     public static String FAVORITE = "FAVORITE";
-    public static String STORY= "STORY";
-    public static String VIDEO= "VIDEO";
+    public static String STORY = "STORY";
+    public static String VIDEO = "VIDEO";
 }

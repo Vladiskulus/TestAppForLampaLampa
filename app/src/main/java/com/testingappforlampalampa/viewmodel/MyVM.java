@@ -1,31 +1,37 @@
 package com.testingappforlampalampa.viewmodel;
 
-import static com.testingappforlampalampa.Constants.*;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.testingappforlampalampa.model.Model;
-import com.testingappforlampalampa.view.fragment.FavoriteFragment;
-import com.testingappforlampalampa.view.fragment.StoryFragment;
-import com.testingappforlampalampa.view.fragment.VideoFragment;
+import com.testingappforlampalampa.model.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-
+import io.reactivex.schedulers.Schedulers;
 
 public class MyVM extends ViewModel {
 
-    private MutableLiveData<String> liveData = new MutableLiveData<>();
+    private MutableLiveData<List<Model>> data = new MutableLiveData<>();
 
-    public LiveData<String> valueLiveData(){
-        return liveData;
+    public LiveData<List<Model>> getList() {
+        return data;
     }
 
-
+    public void initList(String type) {
+        CompositeDisposable disposable = new CompositeDisposable();
+        IGetterJSON iGetterJSON = RetrofitClient.getInstance().create(IGetterJSON.class);
+        disposable.add(iGetterJSON.getList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(list -> list
+                        .stream()
+                        .filter(item -> item.getType()
+                                .equals(type))
+                        .collect(Collectors.toList()))
+                .subscribe(list -> data.setValue(list)));
+    }
 }

@@ -2,15 +2,10 @@ package com.testingappforlampalampa.view.adapter;
 
 import static com.testingappforlampalampa.Constants.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.annotation.*;
+import androidx.fragment.app.*;
 
-import com.testingappforlampalampa.view.fragment.FavoriteFragment;
-import com.testingappforlampalampa.view.fragment.StoryFragment;
-import com.testingappforlampalampa.view.fragment.VideoFragment;
+import com.testingappforlampalampa.view.fragment.*;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
 

@@ -3,6 +3,7 @@ package com.testingappforlampalampa.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Model {
+
     @SerializedName("title")
     private String title;
 
