@@ -16,16 +16,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return FavoriteFragment.newInstance();
-            case 1:
-                return StoryFragment.newInstance();
-            case 2:
-                return VideoFragment.newInstance();
-            default:
-                return getItem(position);
-        }
+        return PagerFragment.newInstance(position);
     }
 
     @Nullable
@@ -40,7 +31,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return VIDEO;
             default:
                 return getPageTitle(position);
-
         }
     }
 

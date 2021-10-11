@@ -31,7 +31,6 @@ public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
         Model model = data.get(position);
         SecondHolder secondHolder = (SecondHolder) holder;
         ListItemBinding v = secondHolder.binder;

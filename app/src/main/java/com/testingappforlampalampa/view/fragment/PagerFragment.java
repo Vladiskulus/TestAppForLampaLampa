@@ -1,11 +1,17 @@
 package com.testingappforlampalampa.view.fragment;
 
+import static com.testingappforlampalampa.Constants.POSITION;
+import static com.testingappforlampalampa.Constants.TYPE_FAVOURITES;
+import static com.testingappforlampalampa.Constants.TYPE_STORIES;
 import static com.testingappforlampalampa.Constants.TYPE_VIDEO;
 
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.annotation.*;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,15 +21,18 @@ import com.testingappforlampalampa.model.Model;
 import com.testingappforlampalampa.view.adapter.RVAdapter;
 import com.testingappforlampalampa.viewmodel.MyVM;
 
-import java.util.*;
+import java.util.List;
 
-public class VideoFragment extends Fragment {
+public class PagerFragment extends Fragment {
 
-    private MyVM vm;
     private FragmentBinding binding;
 
-    public static VideoFragment newInstance() {
-        return new VideoFragment();
+    public static PagerFragment newInstance(int position) {
+        PagerFragment fragment = new PagerFragment();
+        Bundle args = new Bundle();
+        args.putInt(POSITION, position);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Nullable
@@ -32,8 +41,14 @@ public class VideoFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentBinding.inflate(inflater, container, false);
-        vm = new ViewModelProvider(this).get(MyVM.class);
-        vm.initList(TYPE_VIDEO);
+        MyVM vm = new ViewModelProvider(this).get(MyVM.class);
+        if(getArguments().get(POSITION).equals(0)){
+            vm.initList(TYPE_FAVOURITES);
+        } else if (getArguments().get(POSITION).equals(1)) {
+            vm.initList(TYPE_STORIES);
+        } else if (getArguments().get(POSITION).equals(2)) {
+            vm.initList(TYPE_VIDEO);
+        }
         vm.getList().observe(getViewLifecycleOwner(), this::initRecyclerView);
         return binding.getRoot();
     }

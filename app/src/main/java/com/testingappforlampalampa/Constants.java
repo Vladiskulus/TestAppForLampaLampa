@@ -8,4 +8,5 @@ public class Constants {
     public static String FAVORITE = "FAVORITE";
     public static String STORY = "STORY";
     public static String VIDEO = "VIDEO";
+    public static String POSITION = "POSITION";
 }
