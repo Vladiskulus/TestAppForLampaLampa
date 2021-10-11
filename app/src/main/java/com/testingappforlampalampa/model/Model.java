@@ -46,4 +46,5 @@ public class Model {
     public String getTime() {
         return time;
     }
+
 }

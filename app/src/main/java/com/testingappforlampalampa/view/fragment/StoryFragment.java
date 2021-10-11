@@ -1,6 +1,10 @@
 package com.testingappforlampalampa.view.fragment;
 
 
+import static com.testingappforlampalampa.Constants.TYPE_FAVOURITES;
+import static com.testingappforlampalampa.Constants.TYPE_STORIES;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 
@@ -16,6 +20,7 @@ import com.testingappforlampalampa.model.RetrofitClient;
 import com.testingappforlampalampa.view.adapter.RVAdapter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,7 +33,6 @@ public class StoryFragment extends Fragment {
 
     private RecyclerView rv;
     private final CompositeDisposable disposable = new CompositeDisposable();
-    private Maybe<List<Model>> maybe;
     private IGetterJSON iGetterJSON;
 
     public static StoryFragment newInstance() {
@@ -52,6 +56,11 @@ public class StoryFragment extends Fragment {
         disposable.add(iGetterJSON.getList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(list -> list
+                        .stream()
+                        .filter(item -> item.getType()
+                                .equals(TYPE_STORIES))
+                        .collect(Collectors.toList()))
                 .subscribe(this::initRecyclerView));
     }
 

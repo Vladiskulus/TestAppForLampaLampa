@@ -1,5 +1,9 @@
 package com.testingappforlampalampa.view.fragment;
 
+import static com.testingappforlampalampa.Constants.TYPE_FAVOURITES;
+import static com.testingappforlampalampa.Constants.TYPE_VIDEO;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 
@@ -15,6 +19,7 @@ import com.testingappforlampalampa.model.RetrofitClient;
 import com.testingappforlampalampa.view.adapter.RVAdapter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,10 +51,16 @@ public class VideoFragment extends Fragment {
         return view;
     }
 
+
     private void fetchData() {
         disposable.add(iGetterJSON.getList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(list -> list
+                        .stream()
+                        .filter(item -> item.getType()
+                                .equals(TYPE_VIDEO))
+                        .collect(Collectors.toList()))
                 .subscribe(this::initRecyclerView));
     }
 

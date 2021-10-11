@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.testingappforlampalampa.databinding.ActivityMainBinding;
-import com.testingappforlampalampa.model.IGetterJSON;
 import com.testingappforlampalampa.view.adapter.MyPagerAdapter;
-import com.testingappforlampalampa.view.adapter.RVAdapter;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
 
