@@ -1,17 +1,11 @@
 package com.testingappforlampalampa.view.fragment;
 
-import static com.testingappforlampalampa.Constants.POSITION;
-import static com.testingappforlampalampa.Constants.TYPE_FAVOURITES;
-import static com.testingappforlampalampa.Constants.TYPE_STORIES;
-import static com.testingappforlampalampa.Constants.TYPE_VIDEO;
+import static com.testingappforlampalampa.Constants.*;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +36,7 @@ public class PagerFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentBinding.inflate(inflater, container, false);
         MyVM vm = new ViewModelProvider(this).get(MyVM.class);
-        if(getArguments().get(POSITION).equals(0)){
+        if (getArguments().get(POSITION).equals(0)) {
             vm.initList(TYPE_FAVOURITES);
         } else if (getArguments().get(POSITION).equals(1)) {
             vm.initList(TYPE_STORIES);
